@@ -53,8 +53,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ToolBarTray>
             <ToolBar>
+                
                 <Button Command="{Binding ConnectCommand}" >
                     <Button.Style>
                         <Style TargetType="Button">
@@ -77,12 +77,14 @@
                         </Style>
                     </Button.Style>
                 </Button>
+                
                 <Button x:Name="SettingsButton" 
                     Command="{Binding SettingsCommand}" ToolTip="Общие настройки"  >
                     <Button.Content>
                         <Image Source="Resources/setup_32_4.png" />
                     </Button.Content>
                 </Button>
+                
                 <Border BorderBrush="Blue" BorderThickness="2" CornerRadius="2" Background="CornflowerBlue" MinWidth="150" Margin="0,0" >
                     <DockPanel >
                         <TextBlock Text="Connector" Style="{StaticResource MainInfoTextStyle}"/>
@@ -90,20 +92,15 @@
                                    Style="{StaticResource MainInfoValueStyle}" />
                     </DockPanel>
                 </Border>
-            </ToolBar>
 
-        </ToolBarTray>
+               <Button x:Name="LoadSettupButton" 
+                    Command="{Binding LoadSettupCommand}" ToolTip="Настройки загрузки">
+                <Button.Content>
+                    <Image Source="Resources/setup_32_4.png" />
+                </Button.Content>
+            </Button>
+        </ToolBar>
         
-        <!--<Border Grid.Row="1" Style="{StaticResource GridBorderStyle}" >
-            <Grid >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="5"/>
-                    <ColumnDefinition Width="Auto" Style="{StaticResource CollapsedColumnStyle}" />
-                </Grid.ColumnDefinitions>
-            </Grid>
-        </Border>-->
-
         <DockPanel Grid.Row="4" Height="30" HorizontalAlignment="Stretch" Background="LightGray" >
             <TextBlock DockPanel.Dock="Left" Text="{Binding StatusMessage}" Margin="5" />
 

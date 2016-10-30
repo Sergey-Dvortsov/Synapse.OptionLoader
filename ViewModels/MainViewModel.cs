@@ -25,6 +25,7 @@
 
             ConnectCommand = new DelegateCommand(Connect, CanConnect);
             SettingsCommand = new DelegateCommand(ShowSettings, CanShowSettings);
+            LoadSetupCommand = new DelegateCommand(OnLoadSetup, CanLoadSetup);
 
             _root.NewStatusMessage += message =>
             {
@@ -154,6 +155,23 @@
         public void OnLoaded(object sender, RoutedEventArgs e)
         {
             _root.Load();
+        }
+
+        public DelegateCommand LoadSetupCommand { get; set; }
+
+        private void OnLoadSetup(object obj)
+        {
+            var dlg = new ConfigurationWindow(_root.Config);
+            if (dlg.ShowDialog().Value)
+            {
+                _root.Config = (Configuration)dlg.DataContext;
+                _root.Save();
+            }
+        }
+
+        private bool CanLoadSetup(object obj)
+        {
+            return true;
         }
 
 
