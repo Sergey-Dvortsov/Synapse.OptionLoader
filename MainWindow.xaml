@@ -1,0 +1,133 @@
+﻿<Window x:Class="Synapse.OptionLoader.MainWindow"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+        xmlns:conv="clr-namespace:Ecng.Xaml.Converters;assembly=Ecng.Xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+	    xmlns:local="clr-namespace:Synapse.OptionLoader"
+	    Title="OptionLoader"
+        Height="500" Width="900" >
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <ei:CallMethodAction MethodName="OnLoaded" TargetObject="{Binding}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <ei:CallMethodAction MethodName="OnClosing" TargetObject="{Binding}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Window.Resources>
+        <Style TargetType="ToolBar">
+            <Setter Property="Height" Value="34"/>
+        </Style>
+        <Style x:Key="MainInfoTextStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="DarkBlue"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+        </Style>
+        <Style x:Key="MainInfoValueStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="WhiteSmoke"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5,0,8,0"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+
+        <Style x:Key="GridBorderStyle" TargetType="Border" >
+            <Setter Property="BorderBrush" Value="DarkSlateGray"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="2"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="MinWidth" Value="50"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+
+
+    </Window.Resources>
+
+    <Grid x:Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ToolBarTray>
+            <ToolBar>
+                <Button Command="{Binding ConnectCommand}" >
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Image Source="Resources/disconnect-32-2.png" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="ToolTip" Value="Установить соединение"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ConnectionState}" Value="Connected">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Image Source="Resources/connect-32-2.png"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="ToolTip" Value="Разорвать соединение"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <Button x:Name="SettingsButton" 
+                    Command="{Binding SettingsCommand}" ToolTip="Общие настройки"  >
+                    <Button.Content>
+                        <Image Source="Resources/setup_32_4.png" />
+                    </Button.Content>
+                </Button>
+                <Border BorderBrush="Blue" BorderThickness="2" CornerRadius="2" Background="CornflowerBlue" MinWidth="150" Margin="0,0" >
+                    <DockPanel >
+                        <TextBlock Text="Connector" Style="{StaticResource MainInfoTextStyle}"/>
+                        <TextBlock Text="{Binding ConnectorType}" 
+                                   Style="{StaticResource MainInfoValueStyle}" />
+                    </DockPanel>
+                </Border>
+            </ToolBar>
+
+        </ToolBarTray>
+        
+        <!--<Border Grid.Row="1" Style="{StaticResource GridBorderStyle}" >
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="Auto" Style="{StaticResource CollapsedColumnStyle}" />
+                </Grid.ColumnDefinitions>
+            </Grid>
+        </Border>-->
+
+        <DockPanel Grid.Row="4" Height="30" HorizontalAlignment="Stretch" Background="LightGray" >
+            <TextBlock DockPanel.Dock="Left" Text="{Binding StatusMessage}" Margin="5" />
+
+
+            <Image DockPanel.Dock="Right" Height="12" Width="12" HorizontalAlignment="Right" Margin="10,5" 
+                   ToolTip="Состояние соединения с торговым сервером" 
+                   Source="{Binding ServerConnectionState, Converter={StaticResource ConnectionStateImageConv}}"/>
+
+            <Image DockPanel.Dock="Right" ToolTip="Состояние торговой сессии"
+                   Height="12" Width="12" HorizontalAlignment="Right" Margin="0,5">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Source" Value="Resources/box-yellow-16.png"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding SessionState}" Value="ActiveSession" >
+                                <Setter Property="Source" Value="Resources/box-green-16.png"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+        </DockPanel>
+
+    </Grid>
+
+</Window>
